@@ -1,0 +1,13 @@
+# Conda/mamba alternative to the uv environment defined in ../pyproject.toml (uv is the recommended route).
+name: reftools
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.13
+  - bibtexparser<2
+  - pandas
+  - pyyaml
+  - pymupdf
+  - requests
+  - conda-forge::scholarly
