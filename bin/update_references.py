@@ -8,9 +8,11 @@ Inputs (all paths default to locations relative to the repository root):
                                          bin/update_scholar_citations.py)
     - _data/oa_links.yml                 public PDF links by bibkey (written by
                                          bin/resolve_links.py; read only here)
-    - assets/pdf/ or $REFS_PDF_DIR       optional local PDFs named as in Paperpile's `file`
-                                         field; only used to render preview images
-    - assets/img/publication_preview/    images named `<bibkey>_<label>.<ext>`
+    - assets/img/publication_preview/    committed images named `<bibkey>_<label>.<ext>`
+                                         (curated with bin/make_thumbnails.py)
+
+PDFs are not used here (CI has none); preview candidates are made from local PDFs by
+bin/make_thumbnails.py.
 
 The output is deterministic (no timestamps, no network access) so it is safe to use
 from a git hook and to verify in CI with `--check`.
@@ -115,20 +117,6 @@ def yaml_fromfile(path: Path, required: bool = False) -> Dict[str, Any]:
 """ Steps """
 
 
-def add_local_pdf(ref_df: pd.DataFrame, pdfdir: Path) -> pd.DataFrame:
-    """Set `local_pdf` when the file named in Paperpile's `file` field exists in pdfdir.
-    Only used to render previews; it is dropped before the bibliography is written."""
-    ref_df = ensure_columns(ref_df, "file")
-
-    def _convert(x):
-        if isinstance(x, str) and x and (pdfdir / Path(x).name).exists():
-            return Path(x).name
-        return None
-
-    ref_df["local_pdf"] = ref_df["file"].map(_convert)
-    return ref_df
-
-
 def add_links(ref_df: pd.DataFrame, manifest: Dict[str, Any]) -> pd.DataFrame:
     """Set `pdf` (PDF kinds) or `html` (landing page) from the oa_links.yml manifest."""
     ref_df = ensure_columns(ref_df, "pdf", "html")
@@ -148,31 +136,6 @@ def add_links(ref_df: pd.DataFrame, manifest: Dict[str, Any]) -> pd.DataFrame:
     return ref_df
 
 
-def make_preview_from_pdf(
-    pdf_path: Path,
-    outprefix: Path,
-    npages: int | None = None,
-    dpi: int = 72,
-    write: bool = True,
-) -> List[Path]:
-    """Render the first `npages` pages to PNG. With write=False, only return the
-    paths that would be created."""
-    if not write:
-        return [Path(f"{outprefix}_page{i+1}.png") for i in range(npages or 1)]
-
-    import pymupdf  # imported lazily: only needed when previews are generated
-
-    paths = []
-    with pymupdf.open(pdf_path) as doc:
-        n = doc.page_count if npages is None else min(npages, doc.page_count)
-        for i in range(n):
-            out = Path(f"{outprefix}_page{i+1}.png")
-            doc[i].get_pixmap(dpi=dpi).save(out)
-            info(f"Creating preview: {out}")
-            paths.append(out)
-    return paths
-
-
 def _preview_rank(path: Path):
     """Sort key: abstract, then figures, then extracted pages."""
     stem = path.stem
@@ -186,13 +149,9 @@ def _preview_rank(path: Path):
     return 255, label
 
 
-def add_preview(
-    ref_df: pd.DataFrame,
-    imgdir: Path,
-    pdfdir: Path,
-    make_previews: bool = True,
-    write: bool = True,
-) -> pd.DataFrame:
+def add_preview(ref_df: pd.DataFrame, imgdir: Path) -> pd.DataFrame:
+    """Set `preview` from committed images named `<bibkey>_<label>.<ext>` in imgdir.
+    Never renders PDFs; the best-ranked image (abstract, figures, pages) wins."""
     imgext = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp"}
     lookup_all: Dict[str, List[Path]] = defaultdict(list)
     if imgdir.is_dir():
@@ -203,19 +162,6 @@ def add_preview(
                 warn(f"Ignoring preview '{p.name}': expected '<bibkey>_<label>.<ext>'.")
                 continue
             lookup_all[p.stem.rsplit("_", 1)[0]].append(p)
-
-    if make_previews:
-        for _, row in ref_df[ref_df["local_pdf"].notnull()].iterrows():
-            if row["ID"] not in lookup_all:
-                lookup_all[row["ID"]].extend(
-                    make_preview_from_pdf(
-                        pdf_path=pdfdir / row["local_pdf"],
-                        outprefix=imgdir / row["ID"],
-                        npages=1,
-                        dpi=72,
-                        write=write,
-                    )
-                )
 
     previews = {k: sorted(v, key=_preview_rank)[0].name for k, v in lookup_all.items()}
     ref_df["preview"] = ref_df["ID"].map(previews)
@@ -378,12 +324,9 @@ def add_selected(ref_df: pd.DataFrame, selected: Dict[str, Any]) -> pd.DataFrame
 def build_bibtex(
     paperpile_bib: Path,
     pubinfo_yml: Path,
-    pdf_dir: Path,
     preview_dir: Path,
     citations_yml: Path | None,
     links_yml: Path | None = None,
-    make_previews: bool = True,
-    write_previews: bool = True,
     update_citations_yml: bool = False,
     add_altmetric: bool = True,
     add_dimensions: bool = True,
@@ -401,9 +344,7 @@ def build_bibtex(
         f'This file is generated from "{display_source or paperpile_bib}" by `update_references.py`. Do not edit by hand.'
     ]
 
-    pp_df = add_local_pdf(pp_df, pdf_dir)
-    pp_df = add_preview(pp_df, preview_dir, pdf_dir, make_previews, write_previews)
-    pp_df = pp_df.drop(columns=["local_pdf"])
+    pp_df = add_preview(pp_df, preview_dir)
     db.comments.append('Add "preview" field with preview images.')
 
     if citations_yml is not None:
@@ -417,6 +358,11 @@ def build_bibtex(
     pp_df = remove_published_preprints(pp_df, pubinfo)
     if len(pp_df) < _n:
         db.comments.append('Link preprints to final articles when specified in "_data/pubinfo.yml".')
+
+    no_preview = pp_df.loc[pp_df["preview"].isnull(), "ID"].tolist()
+    if no_preview:
+        warn(f"{len(no_preview)} entries have no curated preview image ({', '.join(no_preview)}); "
+             "run bin/make_thumbnails.py to create candidates.")
 
     if links_yml is not None:
         pp_df = add_links(pp_df, yaml_fromfile(links_yml))
@@ -448,8 +394,6 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--paperpile", default=rel("_bibliography/paperpile.bib"), type=Path)
     ap.add_argument("--pubinfo", default=rel("_data/pubinfo.yml"), type=Path)
     ap.add_argument("--out", default=rel("_bibliography/papers.bib"), type=Path)
-    ap.add_argument("--pdf-dir", default=os.environ.get("REFS_PDF_DIR") or rel("assets/pdf"), type=Path,
-                    help="local PDFs used only to render previews (env: REFS_PDF_DIR); may not exist")
     ap.add_argument("--links", default=rel("_data/oa_links.yml"), type=Path,
                     help="public PDF link manifest (read only; written by bin/resolve_links.py)")
     ap.add_argument("--no-links", action="store_true", help="skip the pdf/html link fields")
@@ -459,11 +403,10 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--no-citations", action="store_true", help="skip the Google Scholar merge")
     ap.add_argument("--update-citations-yml", action="store_true",
                     help="back-fill matched DOIs into citations.yml (keeps a .bak copy)")
-    ap.add_argument("--no-previews", action="store_true", help="do not generate previews from PDFs")
     ap.add_argument("--check", action="store_true",
                     help="write nothing; exit 1 if regenerating would change --out")
     ap.add_argument("--dry-run", action="store_true",
-                    help="write nothing (no output, previews or citations.yml); print a diff summary")
+                    help="write nothing (no output or citations.yml); print a diff summary")
     return ap.parse_args(argv)
 
 
@@ -482,12 +425,9 @@ def main(argv=None) -> int:
         text = build_bibtex(
             paperpile_bib=args.paperpile,
             pubinfo_yml=args.pubinfo,
-            pdf_dir=args.pdf_dir,
             preview_dir=args.preview_dir,
             citations_yml=None if args.no_citations else args.citations,
             links_yml=None if args.no_links else args.links,
-            make_previews=not args.no_previews,
-            write_previews=not read_only,
             update_citations_yml=args.update_citations_yml,
             display_source=str(display),
         )
