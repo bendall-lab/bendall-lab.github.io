@@ -154,12 +154,14 @@ layout: default
               {% if section_title == 'Education' %}
                 {% assign entries = section_entries %}
                 {% include cv/education.liquid %}
-              {% elsif section_title == 'Awards' or section_title == 'Honors and Awards' %}
+              {% elsif section_title == 'Awards' %}
                 {% assign entries = section_entries %}
                 {% include cv/awards.liquid %}
               {% elsif section_title == 'Publications' %}
-                {% assign entries = section_entries %}
-                {% include cv/publications.liquid %}
+                {% comment %} Full list lives on the publications page; it is still rendered in the RenderCV PDF {% endcomment %}
+                <p class="card-text font-weight-light">
+                  See the <a href="{{ '/publications/' | relative_url }}">publications page</a> for the full list of publications.
+                </p>
               {% elsif section_title == 'Skills' %}
                 {% assign entries = section_entries %}
                 {% include cv/skills.liquid %}
@@ -180,6 +182,10 @@ layout: default
                 {% include cv/references.liquid %}
               {% else %}
                 <!-- Generic section -->
+                {% if section_entries.first.name %}
+                  {% assign entries = section_entries %}
+                  {% include cv/normal.liquid %}
+                {% endif %}
                 {% for entry in section_entries %}
                   {% if entry.bullet %}
                     <ul class="card-text font-weight-light list-group list-group-flush">

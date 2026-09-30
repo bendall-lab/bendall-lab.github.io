@@ -2,7 +2,7 @@
 layout: page
 permalink: /repositories/
 title: repositories
-description: Edit the `_data/repositories.yml` and change the `github_users` and `github_repos` lists to include your own GitHub profile and repositories.
+description: Open-source software from the Bendall Lab. # TODO(bendall): confirm GitHub handle and repos in _data/repositories.yml
 nav: true
 nav_order: 4
 ---

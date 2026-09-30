@@ -1,0 +1,15 @@
+metadata:
+  last_updated: '2026-02-18'
+
+selected_papers:
+  stellarscope:
+    doi: "10.1016/j.crmeth.2025.101086"
+    title: "A single-cell transposable element atlas of human cell identity"
+
+preprint_published:
+  - preprint: "10.1101/798017"
+    published: "10.1038/s41467-024-48153-z"
+  - preprint: "10.1101/2023.12.28.573568"
+    published: "10.1016/j.crmeth.2025.101086"
+  - preprint: "10.1101/2023.12.06.570422"
+    published: "10.1111/acel.14288"

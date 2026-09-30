@@ -1,14 +1,8 @@
+gi# TODO(bendall): GitHub handle guessed from the Telescope URL in paperpile.bib; add lab org (bendall-lab) and other repos (Stellarscope, HAPHPIPE, ...)
 github_users:
-  - torvalds
-  - alshedivat
+  - mlbendall
 
 repo_description_lines_max: 2
 
 github_repos:
-  - alshedivat/al-folio
-  - jekyll/jekyll
-  - twbs/bootstrap
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - mathjax/MathJax
-  - jpswalsh/academicons
+  - mlbendall/telescope
