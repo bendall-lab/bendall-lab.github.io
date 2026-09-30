@@ -13,3 +13,15 @@ preprint_published:
     published: "10.1016/j.crmeth.2025.101086"
   - preprint: "10.1101/2023.12.06.570422"
     published: "10.1111/acel.14288"
+
+# Public PDF links (used by bin/resolve_links.py; all optional).
+#
+# Force a specific PDF/landing URL for one bibkey (wins over Unpaywall / Europe PMC):
+# pdf_overrides:
+#   Bendall2019-ui: "https://scholarspace.library.gwu.edu/..."
+#
+# Host the PDF yourself: public bucket base URL, plus the bibkeys to serve from it as
+# <pdf_bucket_base>/<bibkey>.pdf (used only when no open-access PDF was found):
+# pdf_bucket_base: "https://pdfs.example.org"
+# pdf_bucket:
+#   - Bendall2019-ui

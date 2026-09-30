@@ -26,3 +26,4 @@ _bibliography/test_*.bib
 .claude/*.local.md
 .claude/worktrees
 _TRASH/
+__pycache__/

@@ -6,7 +6,10 @@ Inputs (all paths default to locations relative to the repository root):
     - _data/pubinfo.yml                  selected papers, preprint -> published pairs
     - _data/citations.yml                Google Scholar data (read only; refreshed by
                                          bin/update_scholar_citations.py)
-    - assets/pdf/                        PDFs named as in Paperpile's `file` field
+    - _data/oa_links.yml                 public PDF links by bibkey (written by
+                                         bin/resolve_links.py; read only here)
+    - assets/pdf/ or $REFS_PDF_DIR       optional local PDFs named as in Paperpile's `file`
+                                         field; only used to render preview images
     - assets/img/publication_preview/    images named `<bibkey>_<label>.<ext>`
 
 The output is deterministic (no timestamps, no network access) so it is safe to use
@@ -15,6 +18,7 @@ from a git hook and to verify in CI with `--check`.
 
 import argparse
 import difflib
+import os
 import re
 import shutil
 import sys
@@ -30,6 +34,7 @@ from bibtexparser.bibdatabase import BibDatabase
 from bibtexparser.bwriter import BibTexWriter
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+PDF_KINDS = ("pdf", "override", "bucket")  # manifest kinds whose link is a PDF; "landing" is not
 
 
 class PipelineError(Exception):
@@ -110,8 +115,9 @@ def yaml_fromfile(path: Path, required: bool = False) -> Dict[str, Any]:
 """ Steps """
 
 
-def add_pdf(ref_df: pd.DataFrame, pdfdir: Path) -> pd.DataFrame:
-    """Set `pdf` when the file named in Paperpile's `file` field is in pdfdir."""
+def add_local_pdf(ref_df: pd.DataFrame, pdfdir: Path) -> pd.DataFrame:
+    """Set `local_pdf` when the file named in Paperpile's `file` field exists in pdfdir.
+    Only used to render previews; it is dropped before the bibliography is written."""
     ref_df = ensure_columns(ref_df, "file")
 
     def _convert(x):
@@ -119,7 +125,26 @@ def add_pdf(ref_df: pd.DataFrame, pdfdir: Path) -> pd.DataFrame:
             return Path(x).name
         return None
 
-    ref_df["pdf"] = ref_df["file"].map(_convert)
+    ref_df["local_pdf"] = ref_df["file"].map(_convert)
+    return ref_df
+
+
+def add_links(ref_df: pd.DataFrame, manifest: Dict[str, Any]) -> pd.DataFrame:
+    """Set `pdf` (PDF kinds) or `html` (landing page) from the oa_links.yml manifest."""
+    ref_df = ensure_columns(ref_df, "pdf", "html")
+    missing = []
+    for idx, row in ref_df.iterrows():
+        rec = manifest.get(row["ID"]) or {}
+        url = rec.get("pdf")
+        if url and rec.get("kind") in PDF_KINDS:
+            ref_df.at[idx, "pdf"] = url
+        else:
+            missing.append(row["ID"])
+            if url and rec.get("kind") == "landing" and pd.isnull(row["html"]):
+                ref_df.at[idx, "html"] = url
+    if missing:
+        warn(f"{len(missing)} entries have no PDF link ({', '.join(missing)}); "
+             "run bin/resolve_links.py or add `pdf_overrides` / `pdf_bucket` in pubinfo.yml.")
     return ref_df
 
 
@@ -180,11 +205,11 @@ def add_preview(
             lookup_all[p.stem.rsplit("_", 1)[0]].append(p)
 
     if make_previews:
-        for _, row in ref_df[ref_df["pdf"].notnull()].iterrows():
+        for _, row in ref_df[ref_df["local_pdf"].notnull()].iterrows():
             if row["ID"] not in lookup_all:
                 lookup_all[row["ID"]].extend(
                     make_preview_from_pdf(
-                        pdf_path=pdfdir / row["pdf"],
+                        pdf_path=pdfdir / row["local_pdf"],
                         outprefix=imgdir / row["ID"],
                         npages=1,
                         dpi=72,
@@ -356,6 +381,7 @@ def build_bibtex(
     pdf_dir: Path,
     preview_dir: Path,
     citations_yml: Path | None,
+    links_yml: Path | None = None,
     make_previews: bool = True,
     write_previews: bool = True,
     update_citations_yml: bool = False,
@@ -375,10 +401,9 @@ def build_bibtex(
         f'This file is generated from "{display_source or paperpile_bib}" by `update_references.py`. Do not edit by hand.'
     ]
 
-    pp_df = add_pdf(pp_df, pdf_dir)
-    db.comments.append(f'Add "pdf" field for entries with an existing file in "assets/pdf".')
-
+    pp_df = add_local_pdf(pp_df, pdf_dir)
     pp_df = add_preview(pp_df, preview_dir, pdf_dir, make_previews, write_previews)
+    pp_df = pp_df.drop(columns=["local_pdf"])
     db.comments.append('Add "preview" field with preview images.')
 
     if citations_yml is not None:
@@ -392,6 +417,10 @@ def build_bibtex(
     pp_df = remove_published_preprints(pp_df, pubinfo)
     if len(pp_df) < _n:
         db.comments.append('Link preprints to final articles when specified in "_data/pubinfo.yml".')
+
+    if links_yml is not None:
+        pp_df = add_links(pp_df, yaml_fromfile(links_yml))
+        db.comments.append('Add "pdf" (or "html" for landing pages) field from "_data/oa_links.yml".')
 
     if add_altmetric:
         pp_df["altmetric"] = "true"
@@ -419,7 +448,11 @@ def parse_args(argv=None) -> argparse.Namespace:
     ap.add_argument("--paperpile", default=rel("_bibliography/paperpile.bib"), type=Path)
     ap.add_argument("--pubinfo", default=rel("_data/pubinfo.yml"), type=Path)
     ap.add_argument("--out", default=rel("_bibliography/papers.bib"), type=Path)
-    ap.add_argument("--pdf-dir", default=rel("assets/pdf"), type=Path)
+    ap.add_argument("--pdf-dir", default=os.environ.get("REFS_PDF_DIR") or rel("assets/pdf"), type=Path,
+                    help="local PDFs used only to render previews (env: REFS_PDF_DIR); may not exist")
+    ap.add_argument("--links", default=rel("_data/oa_links.yml"), type=Path,
+                    help="public PDF link manifest (read only; written by bin/resolve_links.py)")
+    ap.add_argument("--no-links", action="store_true", help="skip the pdf/html link fields")
     ap.add_argument("--preview-dir", default=rel("assets/img/publication_preview"), type=Path)
     ap.add_argument("--citations", default=rel("_data/citations.yml"), type=Path,
                     help="Google Scholar data (read only). Use --no-citations to skip.")
@@ -452,6 +485,7 @@ def main(argv=None) -> int:
             pdf_dir=args.pdf_dir,
             preview_dir=args.preview_dir,
             citations_yml=None if args.no_citations else args.citations,
+            links_yml=None if args.no_links else args.links,
             make_previews=not args.no_previews,
             write_previews=not read_only,
             update_citations_yml=args.update_citations_yml,
