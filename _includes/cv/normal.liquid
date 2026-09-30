@@ -1,0 +1,68 @@
+{% comment %}
+  Generic renderer for RenderCV "normal" entries (name, summary, location, date or start_date/end_date, highlights).
+  Used for sections without a dedicated include (funding, mentoring, workshops, software, awards, service, etc.)
+{% endcomment %}
+
+<ul class="card-text font-weight-light list-group list-group-flush">
+  {% for entry in entries %}
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 text-center date-column">
+          {% assign date = '' %}
+          {% if entry.start_date %}
+            {% assign start_year = entry.start_date | append: '' | split: '-' | first %}
+            {% assign end_year = entry.end_date | append: '' | split: '-' | first | default: 'present' %}
+            {% if start_year == end_year %}
+              {% assign date = start_year %}
+            {% else %}
+              {% assign date = start_year | append: ' - ' | append: end_year %}
+            {% endif %}
+          {% elsif entry.date %}
+            {% assign date = entry.date | append: '' | split: '-' | first %}
+          {% endif %}
+
+          <table class="table-cv">
+            <tbody>
+              {% if date != '' %}
+                <tr>
+                  <td>
+                    <span class="badge font-weight-bold danger-color-dark text-uppercase align-middle" style="min-width: 75px">{{ date }}</span>
+                  </td>
+                </tr>
+              {% endif %}
+              {% if entry.location %}
+                <tr>
+                  <td>
+                    <p class="location">
+                      <i class="fa-solid fa-location-dot iconlocation"></i>
+                      {{ entry.location }}
+                    </p>
+                  </td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="col-xs-10 col-sm-10 col-md-10 mt-2 mt-md-0">
+          <h6 class="title font-weight-bold ml-1 ml-md-4">{{ entry.name | markdownify | remove: '<p>' | remove: '</p>' }}</h6>
+
+          {% if entry.summary %}
+            <h6 class="ml-1 ml-md-4" style="font-size: 0.95rem; font-style: italic">
+              {{ entry.summary | markdownify | remove: '<p>' | remove: '</p>' }}
+            </h6>
+          {% endif %}
+
+          {% if entry.highlights %}
+            <ul class="items">
+              {% for item in entry.highlights %}
+                <li>
+                  <span class="item">{{ item | markdownify | remove: '<p>' | remove: '</p>' }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
