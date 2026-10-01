@@ -13,3 +13,17 @@ assets/rendercv/rendercv_output/*.typ
 Gemfile.lock
 node_modules/
 vendor
+
+# Publication pipeline: PDFs are not hosted in the repo; scratch/working copies
+assets/pdf/*
+!assets/pdf/example_pdf.pdf
+_data/citations1.yml
+_data/original_citations.yml
+_data/test_citations.yml
+_bibliography/*.bak
+_bibliography/test_*.bib
+.claude/settings.local.json
+.claude/*.local.md
+.claude/worktrees
+_TRASH/
+__pycache__/

@@ -1,189 +1,974 @@
 cv:
-  name: Albert Einstein
-  label: Scientist
-  email: einstein@example.com
-  location: Princeton, NJ
-  image: ""
-  summary: A German-born theoretical physicist, widely ranked among the greatest and most influential scientists of all time
-
+  name: Matthew L. Bendall
+  location: Washington, DC
+  email: bendall@gwu.edu
+  website: https://bendall-lab.github.io
   social_networks:
-    - network: X
-      username: AlbertEinstein
-    - network: GitHub
-      username: example
-    - network: LinkedIn
-      username: example
-
-  address:
-    street: 2712 Broadway St
-    city: San Francisco
-    region: California
-    postalCode: CA 94115
-    countryCode: US
+    - network: ORCID
+      username: 0000-0001-9816-5425
+    - network: Google Scholar
+      username: kel6QbEAAAAJ
 
   sections:
-    Education:
-      - institution: University of Zurich
-        location: Zurich, Switzerland
-        url: https://www.uzh.ch/
-        area: Physics
-        studyType: PhD
-        start_date: 1900
-        end_date: 1905
-        score: ""
-        courses: "Theory of Relativity"
-        highlights:
-          - Description 1.
-          - Description 2.
+    Professional Summary:
+      - bullet: "**Publications:** 38 peer-reviewed publications, 10 as first or senior author; h-index 18"
+      - bullet: "**Teaching and mentoring:** formal mentoring of 5 postdoctoral scholars or graduate students; advising and supervision of 11 trainees; four years as Lecturer for Computational Biology Master’s Thesis Exploration (WCM); two years as Teaching Assistant for upper-level computational biology courses (BYU); lead organizer and instructor for Dark Matter Codeathon (WCM); instructor at 4 workshops on transposable elements or microbiome"
+      - bullet: "**Research funding:** Principal Investigator on WCM Fund for the Future grant (completed 2024); Co-Investigator on NCI (R01CA260691) and NIAID (UM1AI164559) (through May 2026); Co-Investigator on NIDA SCORCH grant (through March 2030)"
+      - bullet: "**Scientific contributions:** lead developer of four open-source software packages, including Telescope (100+ citations); author and developer of Pathoscope (100+ citations); contributor to other open-source bioinformatics projects such as Bioconda (600+ citations)"
 
-      - institution: Eidgenössische Technische Hochschule
-        location: Zurich, Switzerland
-        area: Physics
-        studyType: Federal teaching diploma
-        start_date: 1896
-        end_date: 1900
-        highlights:
-          - Description 1.
-          - Description 2.
+    Education:
+      - institution: George Washington University
+        location: Washington, DC
+        degree: Ph.D.
+        area: Genomics and Bioinformatics
+        date: 2019-05
+      - institution: Brigham Young University
+        location: Provo, UT
+        degree: M.S.
+        area: Biology
+        date: 2012-08
+      - institution: Brigham Young University
+        location: Provo, UT
+        degree: B.S.
+        area: Bioinformatics
+        date: 2009-08
+      - institution: Montgomery College
+        location: Rockville, MD
+        degree: A.A.
+        area: Computer Science
+        date: 2006-05
 
     Experience:
-      - company: Institute for Advanced Study, Princeton University
-        position: Professor of Theoretical Physics
-        location: Princeton University, NJ
-        start_date: 1933
-        end_date: 1955
-        summary: Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.
+      - company: The George Washington University
+        position: Associate Research Professor
+        location: Washington, DC
+        start_date: 2025-09
+        end_date: present
+        summary: Department of Biostatistics and Bioinformatics, Milken Institute School of Public Health
+      - company: Weill Cornell Medicine
+        position: Assistant Professor of Computational Biology Research in Medicine
+        location: New York, NY
+        start_date: 2019-08
+        end_date: 2025-08
+        summary: Division of Infectious Diseases, Department of Medicine
+      - company: Nixon Lab, George Washington University School of Medicine
+        position: Doctoral Research Assistant
+        location: Washington, DC
+        start_date: 2015-01
+        end_date: 2018-07
+        summary: "Advisor: Douglas Nixon, MD, PhD"
         highlights:
-          - Relativity
-          - Description 2.
-
-      - company: California Institute of Technology
-        position: Visiting Professor
-        location: Pasadena, California, US
-        start_date: 1933
-        end_date: 1933
+          - Developed Telescope, a computational approach for quantifying transposable element expression using RNA-seq.
+          - Investigated HERV expression profiles in cancer, neurodevelopment, psychiatry, and embryonic development.
+      - company: Computational Biology Institute, George Washington University Milken Institute of Public Health
+        position: Doctoral Research Assistant
+        location: Washington, DC
+        start_date: 2014-08
+        end_date: 2019-07
+        summary: "Advisor: Keith Crandall, PhD"
         highlights:
-          - Description 1.
-          - Description 2.
-
-      - company: Kaiser Wilhelm Institute for Physics
-        position: Director
-        location: Berlin, Germany
-        start_date: 1917
-        end_date: 1933
-
-      - company: Karl-Ferdinand University
-        position: Professor of Theoretical Physics
-        location: Prague, Czechoslovakia
-        start_date: 1911
-        end_date: 1917
-
-      - company: University of Zurich
-        position: Associate Professor of Theoretical Physics
-        location: Zurich, Switzerland
-        start_date: 1909
-        end_date: 1911
-
-    Volunteer:
-      - company: People's Climate March
-        position: Lead Organizer
-        location: Zurich, Switzerland
-        start_date: 2014-04-01
-        end_date: 2015-07-01
-        summary: Lead organizer for the New York City branch of the People's Climate March, the largest climate march in history.
+          - Investigated microbiome community composition and host-pathogen interactions in schizophrenia, pediatric asthma, and cystic fibrosis.
+          - Performed statistical analysis for the WE-HEAL study and identified transcriptional patterns in hidradenitis suppurativa.
+          - Developed the software package HAPHPIPE for viral haplotype assembly and phylodynamics; characterized HIV phylodynamics in Washington DC.
+      - company: Joint Genome Institute, Lawrence Berkeley National Laboratory
+        position: Bioinformatics Software Developer
+        location: Walnut Creek, CA
+        start_date: 2011-12
+        end_date: 2014-08
+        summary: "Synthetic Biology (Samuel Deutsch, PhD); Single Cell Genomics (Rex Malmstrom, PhD)"
         highlights:
-          - "Awarded 'Climate Hero' award by Greenpeace for my efforts organizing the march."
-          - "Men of the year 2014 by Time magazine"
-
-    Awards:
-      - title: Nobel Prize in Physics
-        authors:
-          - "Royal Swedish Academy of Sciences"
-        date: 1921-11-01
-        awarder: Royal Swedish Academy of Sciences
-        url: https://www.nobelprize.org/prizes/physics/1921/einstein/biographical/
-        summary: The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'
-
-      - title: Max Planck Medal
-        authors:
-          - "German Physical Society"
-        date: 2029
-        awarder: German Physical Society
-        summary: Awarded for outstanding scientific achievement
+          - Implemented analysis pipelines for the assembly, mapping, and annotation of metagenomic data using high-performance computing. Developed approaches for detecting selective sweeps using metagenomic time-series.
+          - Led a team of software developers in building laboratory information management systems to support JGI’s Synthetic Biology and Single Cell Genomics programs.
+          - Developed novel methods for identifying epigenetic modifications using PacBio’s single-molecule real-time (SMRT) sequencing technology.
+      - company: Crandall Lab, Brigham Young University
+        position: Graduate Research Assistant
+        location: Provo, UT
+        start_date: 2009-08
+        end_date: 2011-12
+        summary: "Advisor: Keith Crandall, PhD"
+        highlights:
+          - Developed the software package Pathoscope for strain level quantification of metagenomic NGS data.
+          - Evaluated phylogenetic node calibration methods using empirical phylogenetic and fossil history.
+          - Compared phylogenetic and structural approaches for identifying deleterious variants in ANGPTL4.
+          - Evaluated the performance of methods for predicting sites under positive selection in drug-resistant HIV (thesis).
+      - company: Crandall Lab, Brigham Young University
+        position: Undergraduate Research Assistant
+        location: Provo, UT
+        start_date: 2007-10
+        end_date: 2009-08
+        summary: "Mentor: Nicole Lewis Rogers, PhD"
+        highlights:
+          - Examined phylogenetic relationships among 300+ enterovirus isolates to test hypotheses of recombination and adaptation.
 
     Publications:
-      - title: Zur Elektrodynamik bewegter Körper
+      - title: A single-cell transposable element atlas of human cell identity
         authors:
-          - Albert Einstein
-        publisher: Annalen der Physik
-        releaseDate: 1905-06-30
-        url: https://en.wikisource.org/wiki/Translation:On_the_Electrodynamics_of_Moving_Bodies
-        summary: It concerned an interpretation of the Michelson–Morley experiment and the properties of light and time. Special relativity incorporates the principle that the speed of light is the same for all inertial observers regardless of the state of motion of the source.
-
-      - title: Über einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt
+        - Reyes-Gopar H
+        - Marston JL
+        - Singh B
+        - Greenig M
+        - Lin J
+        - Ostrowski MA
+        - Randall KN Jr
+        - Sandoval-Motta S
+        - Dopkins N
+        - Lawrence E
+        - O'Mara MM
+        - Fei T
+        - Duarte RRR
+        - Powell TR
+        - Hernández-Lemus E
+        - Iñiguez LP
+        - Nixon DF
+        - Bendall ML
+        journal: Cell Rep Methods 5(7):101086
+        date: 2025-07
+        doi: 10.1016/j.crmeth.2025.101086
+      - title: Integration of chromosome conformation and gene expression networks reveals regulatory mechanisms in triple negative breast cancer
         authors:
-          - Albert Einstein
-        publisher: Annalen der Physik
-        releaseDate: 1905-03-18
-        url: https://de.wikisource.org/wiki/Über_einen_die_Erzeugung_und_Verwandlung_des_Lichtes_betreffenden_heuristischen_Gesichtspunkt
-        summary: In the second paper, he applied the quantum theory to light to explain the photoelectric effect. In particular, he used the idea of light quanta (photons) to explain experimental results, but stressed the importance of the experimental results. The importance of his work on the photoelectric effect earned him the Nobel Prize in Physics in 1921.
-
-      - title: Die Grundlage der allgemeinen Relativitätstheorie
+        - Reyes-Gopar H
+        - Pérez-Fuentes KA
+        - Bendall ML
+        - Hernández-Lemus E
+        journal: Front Cell Dev Biol 13:1597245
+        date: '2025'
+        doi: 10.3389/fcell.2025.1597245
+      - title: Locus-specific human endogenous retroviruses reveal lymphoma subtypes
         authors:
-          - Albert Einstein
-        publisher: Annalen der Physik
-        releaseDate: 1916-03-20
-        url: https://de.wikisource.org/wiki/Die_Grundlage_der_allgemeinen_Relativitätstheorie
-        summary: The publication of the theory of general relativity made him internationally famous. He was professor of physics at the universities of Zurich (1909–1911) and Prague (1911–1912), before he returned to ETH Zurich (1912–1914).
+        - Singh B
+        - Dopkins N
+        - Fei T
+        - Marston JL
+        - Michael S
+        - Reyes-Gopar H
+        - Curty G
+        - Heymann JJ
+        - Chadburn A
+        - Martin P
+        - Leal FE
+        - Cesarman E
+        - Nixon DF
+        - Bendall ML
+        journal: iScience 28(6):112541
+        date: 2025-06
+        doi: 10.1016/j.isci.2025.112541
+      - title: Transposable elements may enhance antiviral resistance in HIV-1 elite controllers
+        authors:
+        - Singh M
+        - Leddy SM
+        - Iñiguez LP
+        - Bendall ML
+        - Nixon DF
+        - Feschotte C
+        journal: Genome Biol 26(1):28
+        date: 2025-02
+        doi: 10.1186/s13059-025-03484-y
+      - title: Endogenous retroelement expression in modeled airway epithelial repair
+        authors:
+        - Michael S
+        - Liotta N
+        - Fei T
+        - Bendall ML
+        - Nixon DF
+        - Dopkins N
+        journal: Microbes Infect
+        date: 2024-12
+        doi: 10.1016/j.micinf.2024.105465
+      - title: 'Retro-age: A unique epigenetic biomarker of aging captured by DNA methylation states of retroelements'
+        authors:
+        - Ndhlovu LC
+        - Bendall ML
+        - Dwaraka V
+        - Pang APS
+        - Dopkins N
+        - Carreras N
+        - Smith R
+        - Nixon DF
+        - Corley MJ
+        journal: Aging Cell 23(10):e14288
+        date: 2024-10
+        doi: 10.1111/acel.14288
+      - title: Integrating human endogenous retroviruses into transcriptome-wide association studies highlights novel risk factors for major psychiatric conditions
+        authors:
+        - Duarte RRR
+        - Pain O
+        - Bendall ML
+        - de Mulder Rougvie M
+        - Marston JL
+        - Selvackadunco S
+        - Troakes C
+        - Leung SK
+        - Bamford RA
+        - Mill J
+        - O'Reilly PF
+        - Srivastava DP
+        - Nixon DF
+        - Powell TR
+        journal: Nat Commun 15(1):3803
+        date: 2024-05
+        doi: 10.1038/s41467-024-48153-z
+      - title: Endogenous retroelement expression in the gut microenvironment of people living with HIV-1
+        authors:
+        - Dopkins N
+        - Fei T
+        - Michael S
+        - Liotta N
+        - Guo K
+        - Mickens KL
+        - Barrett BS
+        - Bendall ML
+        - Dillon SM
+        - Wilson CC
+        - Santiago ML
+        - Nixon DF
+        journal: EBioMedicine 103:105133
+        date: 2024-05
+        doi: 10.1016/j.ebiom.2024.105133
+      - title: Ribosomal profiling of human endogenous retroviruses in healthy tissues
+        authors:
+        - Dopkins N
+        - Singh B
+        - Michael S
+        - Zhang P
+        - Marston JL
+        - Fei T
+        - Singh M
+        - Feschotte C
+        - Collins N
+        - Bendall ML
+        - Nixon DF
+        journal: BMC Genomics 25(1):5
+        date: 2024-01
+        doi: 10.1186/s12864-023-09909-x
+      - title: Oncogenic Transformation Drives DNA Methylation Loss and Transcriptional Activation at Transposable Element Loci
+        authors:
+        - Kanholm T
+        - Rentia U
+        - Hadley M
+        - Karlow JA
+        - Cox OL
+        - Diab N
+        - Bendall ML
+        - Dawson T
+        - McDonald JI
+        - Xie W
+        - Crandall KA
+        - Burns KH
+        - Baylin SB
+        - Easwaran H
+        - Chiappinelli KB
+        journal: Cancer Res 83(15):2584-2599
+        date: 2023-08
+        doi: 10.1158/0008-5472.CAN-22-3485
+      - title: Endogenous Reverse Transcriptase Inhibition Attenuates TLR5-Mediated Inflammation
+        authors:
+        - Dopkins N
+        - Singh B
+        - Michael S
+        - O'Mara MM
+        - Marston JL
+        - Fei T
+        - Bendall ML
+        - Nixon DF
+        journal: mBio 14(1):e0328022
+        date: 2023-02
+        doi: 10.1128/mbio.03280-22
+      - title: Naso-oropharyngeal microbiome from breast cancer patients diagnosed with COVID-19
+        authors:
+        - Viana MC
+        - Curty G
+        - Furtado C
+        - Singh B
+        - Bendall ML
+        - Viola JPB
+        - de Melo AC
+        - Soares MA
+        - Moreira MAM
+        journal: Front Microbiol 13:1074382
+        date: '2022'
+        doi: 10.3389/fmicb.2022.1074382
+      - title: A field guide to endogenous retrovirus regulatory networks
+        authors:
+        - Dopkins N
+        - O'Mara MM
+        - Lawrence E
+        - Fei T
+        - Sandoval-Motta S
+        - Nixon DF
+        - Bendall ML
+        journal: Mol Cell 82(20):3763-3768
+        date: 2022-10
+        doi: 10.1016/j.molcel.2022.09.011
+      - title: How human endogenous retroviruses interact with the microbiota in health and disease
+        authors:
+        - Dopkins N
+        - O'Mara MM
+        - Singh B
+        - Marston JL
+        - Bendall ML
+        - Nixon DF
+        journal: Trends Microbiol 30(9):812-815
+        date: 2022-09
+        doi: 10.1016/j.tim.2022.05.011
+      - title: Specific human endogenous retroviruses predict metastatic potential in uveal melanoma
+        authors:
+        - Bendall ML
+        - Francis JH
+        - Shoushtari AN
+        - Nixon DF
+        journal: JCI Insight 7(9)
+        date: 2022-05
+        doi: 10.1172/jci.insight.147172
+      - title: SARS-CoV-2 infection mediates differential expression of human endogenous retroviruses and long interspersed nuclear elements
+        authors:
+        - Marston JL
+        - Greenig M
+        - Singh M
+        - Bendall ML
+        - Duarte RR
+        - Feschotte C
+        - Iñiguez LP
+        - Nixon DF
+        journal: JCI Insight
+        date: 2021-11
+        doi: 10.1172/jci.insight.147170
+      - title: Locus-Specific Characterization of Human Endogenous Retrovirus Expression in Prostate, Breast, and Colon Cancers
+        authors:
+        - Steiner MC
+        - Marston JL
+        - Iñiguez LP
+        - Bendall ML
+        - Chiappinelli KB
+        - Nixon DF
+        - Crandall KA
+        journal: Cancer Res 81(13):3449-3460
+        date: 2021-07
+        doi: 10.1158/0008-5472.CAN-20-3975
+      - title: 'Expression of Human Endogenous Retroviruses in Systemic Lupus Erythematosus: Multiomic Integration With Gene Expression'
+        authors:
+        - Stearrett N
+        - Dawson T
+        - Rahnavard A
+        - Bachali P
+        - Bendall ML
+        - Zeng C
+        - Caricchio R
+        - Pérez-Losada M
+        - Grammer AC
+        - Lipsky PE
+        - Crandall KA
+        journal: Front Immunol 12:661437
+        date: '2021'
+        doi: 10.3389/fimmu.2021.661437
+      - title: 'HAPHPIPE: Haplotype Reconstruction and Phylodynamics for Deep Sequencing of Intrahost Viral Populations'
+        authors:
+        - Bendall ML*
+        - Gibson KM*
+        - Steiner MC
+        - Rentia U
+        - Pérez-Losada M
+        - Crandall KA
+        journal: Mol Biol Evol 38(4):1677-1690
+        date: 2021-04
+        doi: 10.1093/molbev/msaa315
+      - title: 'Human Endogenous Retrovirus Expression Is Upregulated in the Breast Cancer Microenvironment of HIV Infected Women: A Pilot Study'
+        authors:
+        - Curty G*
+        - Beckerle GA*
+        - Iñiguez LP*
+        - Furler RL
+        - de Carvalho PS
+        - Marston JL
+        - Champiat S
+        - Heymann JJ
+        - Ormsby CE
+        - Reyes-Terán G
+        - Soares MA*
+        - Nixon DF*
+        - Bendall ML*
+        - Leal FE*
+        - de Mulder Rougvie M*
+        journal: Front Oncol 10:553983
+        date: '2020'
+        doi: 10.3389/fonc.2020.553983
+      - title: Human Endogenous Retrovirus Expression Is Associated with Head and Neck Cancer and Differential Survival
+        authors:
+        - Kolbe AR
+        - Bendall ML
+        - Pearson AT
+        - Paul D
+        - Nixon DF
+        - Pérez-Losada M
+        - Crandall KA
+        journal: Viruses 12(9)
+        date: 2020-08
+        doi: 10.3390/v12090956
+      - title: Evaluation of haplotype callers for next-generation sequencing of viruses
+        authors:
+        - Eliseev A
+        - Gibson KM
+        - Avdeyev P
+        - Novik D
+        - Bendall ML
+        - Pérez-Losada M
+        - Alexeev N
+        - Crandall KA
+        journal: Infect Genet Evol 82:104277
+        date: 2020-08
+        doi: 10.1016/j.meegid.2020.104277
+      - title: Validation of Variant Assembly Using HAPHPIPE with Next-Generation Sequence Data from Viruses
+        authors:
+        - Gibson KM
+        - Steiner MC
+        - Rentia U
+        - Bendall ML
+        - Pérez-Losada M
+        - Crandall KA
+        journal: Viruses 12(7)
+        date: 2020-07
+        doi: 10.3390/v12070758
+      - title: A cross-sectional study to characterize local HIV-1 dynamics in Washington, DC using next-generation sequencing
+        authors:
+        - Gibson KM
+        - Jair K
+        - Castel AD
+        - Bendall ML
+        - Wilbourn B
+        - Jordan JA
+        - Crandall KA
+        - Pérez-Losada M
+        journal: Sci Rep 10(1):1989
+        date: 2020-02
+        doi: 10.1038/s41598-020-58410-y
+      - title: 'Transcriptome patterns in hidradenitis suppurativa: support for the role of antimicrobial peptides and interferon pathways in disease pathogenesis'
+        authors:
+        - Shanmugam VK
+        - Jones D
+        - McNish S
+        - Bendall ML
+        - Crandall KA
+        journal: Clin Exp Dermatol 44(8):882-892
+        date: 2019-12
+        doi: 10.1111/ced.13959
+      - title: Transcriptomic analysis of human endogenous retroviruses in systemic lupus erythematosus
+        authors:
+        - Iñiguez LP
+        - de Mulder Rougvie M
+        - Stearrett N
+        - Jones RB
+        - Ormsby CE
+        - Reyes-Terán G
+        - Crandall KA
+        - Nixon DF
+        - Bendall ML
+        journal: Proc Natl Acad Sci U S A 116(43):21350-21351
+        date: 2019-10
+        doi: 10.1073/pnas.1907705116
+      - title: 'Telescope: Characterization of the retrotranscriptome by accurate estimation of transposable element expression'
+        authors:
+        - Bendall ML
+        - de Mulder M
+        - Iñiguez LP
+        - Lecanda-Sánchez A
+        - Pérez-Losada M
+        - Ostrowski MA
+        - Jones RB
+        - Mulder LCF
+        - Reyes-Terán G
+        - Crandall KA
+        - Ormsby CE
+        - Nixon DF
+        journal: PLoS Comput Biol 15(9):e1006453
+        date: 2019-09
+        doi: 10.1371/journal.pcbi.1006453
+      - title: 'Bioconda: sustainable and comprehensive software distribution for the life sciences'
+        authors:
+        - Grüning B
+        - Dale R
+        - Sjödin A
+        - Chapman BA
+        - Rowe J
+        - Tomkins-Tinch CH
+        - Valieris R
+        - Köster J
+        journal: Nat Methods 15(7):475-476
+        date: 2018-07
+        doi: 10.1038/s41592-018-0046-7
+      - title: Benchmark Evaluation of True Single Molecular Sequencing to Determine Cystic Fibrosis Airway Microbiome Diversity
+        authors:
+        - Hahn A
+        - Bendall ML
+        - Gibson KM
+        - Chaney H
+        - Sami I
+        - Perez GF
+        - Koumbourlis AC
+        - McCaffrey TA
+        - Freishtat RJ
+        - Crandall KA
+        journal: Front Microbiol 9:1069
+        date: '2018'
+        doi: 10.3389/fmicb.2018.01069
+      - title: Genome-wide selective sweeps and gene-specific sweeps in natural bacterial populations
+        authors:
+        - Bendall ML*
+        - Stevens SL*
+        - Chan LK
+        - Malfatti S
+        - Schwientek P
+        - Tremblay J
+        - Schackwitz W
+        - Martin J
+        - Pati A
+        - Bushnell B
+        - Froula J
+        - Kang D
+        - Tringe SG
+        - Bertilsson S
+        - Moran MA
+        - Shade A
+        - Newton RJ
+        - McMahon KD
+        - Malmstrom RR
+        journal: ISME J 10(7):1589-601
+        date: 2016-07
+        doi: 10.1038/ismej.2015.241
+      - title: Composition, taxonomy and functional diversity of the oropharynx microbiome in individuals with schizophrenia and controls
+        authors:
+        - Castro-Nallar E
+        - Bendall ML
+        - Pérez-Losada M
+        - Sabuncyan S
+        - Severance EG
+        - Dickerson FB
+        - Schroeder JR
+        - Yolken RH
+        - Crandall KA
+        journal: PeerJ 3:e1140
+        date: '2015'
+        doi: 10.7717/peerj.1140
+      - title: Dual Transcriptomic Profiling of Host and Microbiota during Health and Disease in Pediatric Asthma
+        authors:
+        - Pérez-Losada M
+        - Castro-Nallar E
+        - Bendall ML
+        - Freishtat RJ
+        - Crandall KA
+        journal: PLoS One 10(6):e0131819
+        date: '2015'
+        doi: 10.1371/journal.pone.0131819
+      - title: Phylogenomically guided identification of industrially relevant GH1 β-glucosidases through DNA synthesis and nanostructure-initiator mass spectrometry
+        authors:
+        - Heins RA
+        - Cheng X
+        - Nath S
+        - Deng K
+        - Bowen BP
+        - Chivian DC
+        - Datta S
+        - Friedland GD
+        - D'Haeseleer P
+        - Wu D
+        - Tran-Gyamfi M
+        - Scullin CS
+        - Singh S
+        - Shi W
+        - Hamilton MG
+        - Bendall ML
+        - Sczyrba A
+        - Thompson J
+        - Feldman T
+        - Guenther JM
+        - Gladden JM
+        - Cheng JF
+        - Adams PD
+        - Rubin EM
+        - Simmons BA
+        - Sale KL
+        - Northen TR
+        - Deutsch S
+        journal: ACS Chem Biol 9(9):2082-91
+        date: 2014-09
+        doi: 10.1021/cb500244v
+      - title: 'The emergence of lobsters: phylogenetic relationships, morphological evolution and divergence time comparisons of an ancient group (decapoda: achelata, astacidea, glypheidea, polychelida)'
+        authors:
+        - Bracken-Grissom HD
+        - Ahyong ST
+        - Wilkinson RD
+        - Feldmann RM
+        - Schweitzer CE
+        - Breinholt JW
+        - Bendall ML
+        - Palero F
+        - Chan TY
+        - Felder DL
+        - Robles R
+        - Chu KH
+        - Tsang LM
+        - Kim D
+        - Martin JW
+        - Crandall KA
+        journal: Syst Biol 63(4):457-79
+        date: 2014-07
+        doi: 10.1093/sysbio/syu008
+      - title: Exploring the roles of DNA methylation in the metal-reducing bacterium Shewanella oneidensis MR-1
+        authors:
+        - Bendall ML
+        - Luong K
+        - Wetmore KM
+        - Blow M
+        - Korlach J
+        - Deutschbauer A
+        - Malmstrom RR
+        journal: J Bacteriol 195(21):4966-74
+        date: 2013-11
+        doi: 10.1128/JB.00935-13
+      - title: 'Pathoscope: species identification and strain attribution with unassembled sequencing data'
+        authors:
+        - Francis OE
+        - Bendall ML
+        - Manimaran S
+        - Hong C
+        - Clement NL
+        - Castro-Nallar E
+        - Snell Q
+        - Schaalje GB
+        - Clement MJ
+        - Crandall KA
+        - Johnson WE
+        journal: Genome Res 23(10):1721-9
+        date: 2013-10
+        doi: 10.1101/gr.150151.112
+      - title: Phylogenetics applied to genotype/phenotype association and selection analyses with sequence data from angptl4 in humans
+        authors:
+        - Maxwell TJ
+        - Bendall ML
+        - Staples J
+        - Jarvis T
+        - Crandall KA
+        journal: Int J Mol Sci 11(1):370-85
+        date: 2010-01
+        doi: 10.3390/ijms11010370
+      - title: Phylogenetic relationships and molecular adaptation dynamics of human rhinoviruses
+        authors:
+        - Lewis-Rogers N
+        - Bendall ML
+        - Crandall KA
+        journal: Mol Biol Evol 26(5):969-81
+        date: 2009-05
+        doi: 10.1093/molbev/msp009
+      - title: Human endogenous retrovirus landscape of melanoma metastases in response to immune checkpoint inhibition
+        authors:
+        - Fei T
+        - Singh B
+        - Dopkins N
+        - Marston JL
+        - Francis JH
+        - Nixon DF
+        - Shoushtari AN
+        - Bendall ML
+        journal: Submitted
+      - title: Single-cell retrotranscriptomics of human germinal center B cells reveals trajectories of cell fate
+        authors:
+        - Marston JL*
+        - Reyes-Gopar H*
+        - Singh B
+        - Greenig M
+        - Dopkins N
+        - Sandoval-Motta S
+        - Lawrence E
+        - O’Mara MM
+        - Fei T
+        - Lin J
+        - Randall KN
+        - Hernandez-Lemus E
+        - Cesarman E
+        - Iñiguez LP
+        - Nixon DF
+        - Bendall ML
+        journal: In progress
+      - title: Human endogenous retrovirus-mediated transcriptional regulation in the MHC and beyond
+        authors:
+        - Greenig M
+        - Bendall ML*
+        - Nixon DF*
+        - Marston JL*
+        journal: Under review
 
-    Skills:
-      - name: Physics
-        level: Master
-        icon: fa-solid fa-hashtag
-        keywords: "Quantum Mechanics, Quantum Computing, Quantum Information, Quantum Cryptography, Quantum Communication, Quantum Teleportation"
-
-    Languages:
-      - name: German
-        summary: "Native speaker"
-
-      - name: English
-        summary: "Fluent"
-
-    Interests:
-      - name: Physics
-        icon: fa-solid fa-tag
-        keywords: "Quantum Mechanics, Quantum Computing, Quantum Information, Quantum Cryptography, Quantum Communication, Quantum Teleportation"
-
-    Certificates:
-      - name: Machine Learning
-        date: 2018-01-01
-        issuer: Stanford University
-        icon: fa-solid fa-location-dot
-
-      - name: Quantum Computing
-        date: 2018-01-01
-        issuer: Stanford University
-        icon: fa-solid fa-tag
-
-      - name: Quantum Information
-        date: 2018-01-01
-        issuer: Stanford University
-        icon: fa-solid fa-envelope
-
-    Projects:
-      - name: Quantum Computing
-        summary: Quantum computing is the use of quantum-mechanical phenomena such as superposition and entanglement to perform computation. Computers that perform quantum computations are known as quantum computers.
+    Current Research Funding:
+      - name: Single cell dark matter in the context of HIV and substance use
+        start_date: 2025-07
+        end_date: 2030-03
+        summary: "R01DA063076 (Nixon/Ndhlovu/Corley) · NIH/NIDA · $2,976,266 TC Y1-5 · 6.00 calendar months · Role: Co-Investigator"
         highlights:
-          - Quantum Teleportation
-          - Quantum Cryptography
-        start_date: 2018-01-01
-        end_date: 2018-01-01
+          - "Submitted in response to RFA-DA-25-016, “Single Cell Opioid Responses in the Context of HIV (SCORCH) Program: Data Mining and Functional Validation (R01 Clinical Trial Not Allowed)”. The application aims to investigate the transcriptional and epigenetic regulatory states of transposable elements at the single cell level in the context of HIV, antiretroviral therapy, and cannabinoid use by applying data mining approaches in multi-omics datasets."
+      - name: HOPE – HIV Obstruction by Programmed Epigenetics
+        start_date: 2021-08
+        end_date: 2026-04
+        summary: "UM1AI164559 (Ott/Ndhlovu/Valente) · University of California San Francisco/NIH · $720,376.00 Subaward DC Y1-2 · 3.00 calendar months · Role: Subaward Co-Investigator"
+        highlights:
+          - "The HOPE mission is to find a cure for HIV using a novel “block-lock-and-excise” approach—which entails the long-term durable silencing of viral expression towards permanent excision of the latent provirus—leading to the control of the virus in the absence of therapy."
+      - name: Regulatory Crosstalk Between Human Endogenous Retroviruses, HIV, and EBV, in Lymphoma
+        start_date: 2021-05
+        end_date: 2026-04
+        summary: "R01CA260691 (Nixon/Cesarman) · NIH/NCI · $5,904,837.00 TC · 1.08 calendar months · Role: Co-Investigator"
+        highlights:
+          - "This R01 grant proposal will investigate how these activities intersect and synergize to promote the development of lymphoma in people living with HIV, and how translated HERV products could create neoantigenic targets for immune attack in diffuse large B cell lymphoma (DLBCL)."
 
-    References:
-      - name: Professor John Doe
-        icon: fa-solid fa-laptop
-        reference: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit.
+    Past Research Funding:
+      - name: Elucidating the role of endogenous retrovirus expression in primary melanoma and metastasis
+        start_date: 2021-07
+        end_date: 2024-06
+        summary: "61500657 (Bendall) · Weill Cornell Medicine (Fund for the Future) · $300,000.00 TC · 5.76 calendar months · Role: Principal Investigator"
+        highlights:
+          - "This proposal hypothesizes that locus-specific dysregulation of human endogenous retroviruses (HERV) expression is a significant predictor of metastatic risk in primary uveal melanoma (UM) and metastases associated HERVs modulate anti-tumor immunity and therefore may be harnessed to drive successful immune-based therapy in patients with UM. These hypotheses will be investigated by integrating multiomic data from primary and metastatic UM, leveraging the computational tools and databases that have been developed for analyzing transposable element expression."
+      - name: The Role of Transposable Elements in Healthy Aging and in Alzheimer’s Disease
+        start_date: 2022-05
+        end_date: 2023-08
+        summary: "R56AG07897001 (Nixon) · NIH/NIA · $865,823.00 TC · 1.92 calendar months · Role: Co-Investigator"
+        highlights:
+          - "This R01 proposal aims to investigate the role of human endogenous retroviruses as potent activators of innate immunity and their role in Alzheimer’s disease."
+      - name: Novel approaches for relating genetic variation in endogenous retroviruses to function and disease
+        start_date: 2020-09
+        end_date: 2022-08
+        summary: "R21HG011513 (Nixon/Powell) · NIH · $150,000.00 DC · 1.20 calendar months · Role: Co-Investigator"
+        highlights:
+          - "This R21 proposes to use a series of genetic and transcriptomic analyses to infer the etiological and functional role human endogenous retroviruses play in relation to heritable, polygenic disease states."
+      - name: BELIEVE – Bench to Bed Enhanced Lymphocyte Infusions to Engineer Viral Eradication
+        start_date: 2016-07
+        end_date: 2022-06
+        summary: "UM1AI126617 (Nixon) · NIH/NIAID · Role: Co-Investigator"
+        highlights:
+          - "This proposal hypothesizes that enhancing patients’ autologous lymphocytes ex vivo and re-infusing them, along with latency reversing agents, and specific targeting to sites where latent virus resides, could lead to eradication of latently infected cells and potentially a cure for HIV-infected patients."
+      - name: HIV induced anti-cancer HERV immunity in prostate, breast and colon cancers
+        start_date: 2016-08
+        end_date: 2019-07
+        summary: "R01CA206488 (Nixon) · NIH/NCI · Role: Graduate Research Assistant"
+        highlights:
+          - "This proposal hypothesizes that HIV reactivation of HERV’s stimulates anti-HERV immunity, which specifically recognizes HERVs also expressed in prostate, colon and breast cancers; and that these HIV induced HERV specific immune responses target HERVs that are expressed in breast, colon or prostate cancer."
 
-      - name: Professor Jane Smith
-        icon: fa-solid fa-thumbtack
-        reference: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit.
+    Formal Mentorship:
+      - name: Helena Reyes
+        summary: Postdoctoral Fellow, Feinstein Institutes for Medical Research (2025 – current); PhD Student, Universidad Nacional Autónoma de México (UNAM) (2021 – 2024)
+        start_date: 2021
+        end_date: present
+        highlights:
+          - Advised on Stellarscope software development and computational workflows. First author on Stellarscope manuscript (Cell Reports Methods).
+      - name: Jez Marston
+        summary: MD/PhD student, Weill Cornell Medicine
+        start_date: 2020
+        end_date: present
+        highlights:
+          - Advised on HERV cancer and HERV SARS-CoV-2 projects. Published three papers including one first author.
+      - name: Bhavya Singh, MS
+        summary: Bioinformatician, Weill Cornell Medicine
+        start_date: 2021
+        end_date: 2023
+        highlights:
+          - Supervised in implementing research workflows for HERV lymphoma and uveal melanoma projects. First author on lymphoma manuscript (iScience).
+          - Currently a PhD student at the Icahn School of Medicine at Mount Sinai.
+      - name: Tongyi (Phoebe) Fei, MS
+        summary: Computational Biology Masters student, Weill Cornell Graduate School
+        start_date: 2022
+        end_date: 2023
+        highlights:
+          - Supervised in implementing research workflows for uveal melanoma projects. First author on melanoma metastasis manuscript (submitted).
+          - Currently an R&D associate at Sysmex Corporation in Kobe, Japan.
+      - name: Luis Pedro Iñiguez, PhD
+        summary: Postdoctoral Fellow, Weill Cornell Medicine
+        start_date: 2019
+        end_date: 2021
+        highlights:
+          - Published four papers including two first-author (PNAS and Front Oncol).
+          - Currently a Bioinformatician at Centre for Genomic Regulation, Barcelona.
+
+    Supervised Trainees:
+      - name: Gislaine Curty, MS
+        summary: Instituto Nacional de Câncer, Rio de Janeiro, Brazil
+        start_date: 2019
+        end_date: 2023
+        highlights:
+          - Advised on HERV cancer projects. Published four papers with Nixon lab members, including three first-author.
+      - name: Matthew Greenig
+        summary: Computational Biology MPhil Student, University of Cambridge
+        start_date: 2020
+        end_date: 2021
+        highlights:
+          - Advised on HERVs in MHC project, manuscript in review. Participant in 2021 Telescope Codeathon.
+          - Currently a PhD student in Chemistry at University of Cambridge.
+      - name: Kip Randall
+        summary: Undergraduate student, San Jose State University
+        date: 2021
+        highlights:
+          - Co-advised (with Jez Marston) for the Tri-I Gateways to the Lab summer program. Participant in 2021 Telescope Codeathon.
+      - name: Yesmeen Elgabori
+        summary: Undergraduate student, Connecticut College
+        date: 2021
+        highlights:
+          - Co-advised (with Jez Marston) for the Tri-I Gateways to the Lab summer program.
+      - name: Margaret Steiner
+        summary: Applied mathematics undergraduate, GWU
+        start_date: 2019
+        end_date: 2020
+        highlights:
+          - Advised on viral phylodynamics (HAPHPIPE) and HERV cancer projects. Published three papers including one first-author (Cancer Res. 2021).
+          - Currently a PhD student in the Dept. of Human Genetics at University of Chicago.
+      - name: Nathaniel Stearrett, PhD
+        summary: Institute for Biomedical Sciences PhD candidate, GWU
+        start_date: 2019
+        end_date: 2020
+        highlights:
+          - Peer advisor on HERVs in SLE work. Published two papers, one first-author (Front Immunol.).
+      - name: Tyson Dawson, PhD
+        summary: Institute for Biomedical Sciences PhD candidate, GWU
+        start_date: 2019
+        end_date: 2020
+        highlights:
+          - Peer advisor on HERVs in SLE projects. Published one paper.
+      - name: Keylie Gibson, PhD
+        summary: Computational Biology Institute PhD candidate, GWU
+        start_date: 2017
+        end_date: 2020
+        highlights:
+          - Peer advisor on viral phylodynamics (HAPHPIPE), microbiome, and ERV-9 characterization projects. Co-authored five publications including four first-author.
+          - Currently a Bioinformatics Scientist at Integrated DNA Technologies.
+      - name: Gary Hovsepian
+        summary: Pre-Medical Studies undergraduate, GWU
+        start_date: 2017
+        end_date: 2018
+        highlights:
+          - Presented posters at GW Research Day and Frontiers in Retrovirology conference.
+          - Currently a Medical Student at GWU School of Medicine.
+      - name: Mrigank Tiwari
+        summary: Data Science Master’s student, GWU
+        date: 2017
+        highlights:
+          - Successfully completed Master’s thesis project.
+          - Currently a Senior Chief Engineer at Samsung Electronics, India.
+      - name: Jingyuan Hu
+        summary: Biology undergraduate, GWU
+        start_date: 2016
+        end_date: 2017
+        highlights:
+          - Co-author of two poster presentations at HIV Dynamics and Evolution conference.
+          - Currently a PhD student at Baylor College of Medicine.
+
+    Teaching Experience:
+      - name: "Lecturer – Thesis research exploration (CMPB 6001)"
+        summary: Weill Cornell Graduate School
+        start_date: 2020
+        end_date: 2024
+      - name: "Teaching Assistant – Bioinformatics (BIO465)"
+        summary: Brigham Young University
+        start_date: 2009
+        end_date: 2011
+      - name: "Teaching Assistant – Computational Biology (BIO365)"
+        summary: Brigham Young University
+        start_date: 2009
+        end_date: 2011
+
+    Workshops:
+      - name: Telescope Codeathon – Scientific Organizer
+        summary: Telescope “Dark Matter” Codeathon 2021
+        location: New York, NY
+        date: 2021-09
+        highlights:
+          - Organized and led a four-day codeathon involving 12 biologists and computational scientists. Developed Stellarscope software.
+      - name: Telescope intensive course – Lead instructor
+        summary: Endogenous Retroelements in Psychiatry Workshop
+        location: London, UK
+        date: 2017-07
+        highlights:
+          - Taught two-day workshop introducing RNA-seq and Telescope retrotranscriptome analysis.
+      - name: PathoScope and PathoStat Tutorial – Instructor
+        summary: Global Biodiversity Genomics Conference
+        location: Washington, DC
+        date: 2017-02
+        highlights:
+          - Taught four-hour workshop on microbiome analysis using PathoScope.
+      - name: PathoScope and PathoStat Tutorial – Instructor
+        summary: Mid-Atlantic Microbiome Meetup
+        location: College Park, MD
+        date: 2016-11
+        highlights:
+          - Taught two-hour workshop on microbiome analysis using PathoScope.
+
+    Software:
+      - name: Stellarscope – Lead Developer
+        summary: Quantification of transposable element expression in single-cells (python)
+        start_date: 2023
+        end_date: present
+      - name: Telescope – Lead Developer
+        summary: Quantification of transposable element expression using RNA-seq (python)
+        start_date: 2015
+        end_date: present
+      - name: HAPHPIPE – Lead Developer
+        summary: Haplotype and phylodynamics pipeline for NGS viral assembly (python)
+        start_date: 2017
+        end_date: present
+      - name: Bioconda – Contributor
+        summary: Sustainable and comprehensive software distribution for the life sciences
+        start_date: 2017
+        end_date: present
+      - name: PathoStat – Developer
+        summary: Statistical microbiome analysis on metagenomics results (R, Shiny)
+        start_date: 2016
+        end_date: 2018
+      - name: PathoScope – Developer
+        summary: Strain-level quantification of microbial communities
+        start_date: 2013
+        end_date: 2018
+      - name: singlecellDB – Lead Developer
+        summary: Analysis system for microbial single cell sequencing (Python/Django, R)
+        start_date: 2011
+        end_date: 2014
+
+    Invited Talks:
+      - name: Invited Speaker – Endogenous Retrotransposable Elements and Human Diseases Conference
+        location: Mexico
+        date: 2025-11
+
+    Honors and Awards:
+      - name: Fund for the Future
+        summary: Department of Medicine, WCM
+        start_date: 2021
+        end_date: 2024
+      - name: Poster Award Winner
+        summary: Probing Human Disease Using Single-Cell Technologies
+        location: Cancun, Mexico
+        date: 2022-05
+      - name: Biomedical Sciences Fellowship
+        summary: Institute for Biomedical Sciences, GWU
+        start_date: 2014
+        end_date: 2016
+      - name: Graduate Scholarship
+        summary: Department of Biology, BYU
+        start_date: 2009
+        end_date: 2011
+      - name: Research Presentation Travel Award
+        summary: Graduate Student Society, BYU
+        date: 2009
+      - name: Undergraduate Research Grant
+        summary: Office of Research and Creative Activities, BYU
+        date: 2009
+
+    Academic Service:
+      - name: Review Editor
+        summary: Frontiers in Bioinformatics, Genomic Analysis section
+        start_date: 2021-03
+        end_date: present
+      - name: Reviewer
+        summary: International Journal of Molecular Sciences
+        date: 2021
+      - name: LOI Reviewer
+        summary: Multi-investigator seed grant, Cornell Academic Integration
+        date: 2021
+      - name: Reviewer
+        summary: PLOS Computational Biology
+        date: 2021
+      - name: Reviewer
+        summary: PLOS One
+        date: 2017
+      - name: Reviewer
+        summary: PeerJ
+        date: 2016

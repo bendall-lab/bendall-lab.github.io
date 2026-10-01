@@ -3,7 +3,7 @@ layout: page
 permalink: /teaching/
 title: teaching
 description: Course materials, schedules, and resources for classes taught.
-nav: true
+nav: false # TODO(bendall): hidden; only template sample courses exist (and the template calendar). Decide whether to list courses
 nav_order: 6
 calendar: true
 ---

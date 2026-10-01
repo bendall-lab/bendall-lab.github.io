@@ -2,8 +2,8 @@
 layout: page
 title: projects
 permalink: /projects/
-description: A growing collection of your cool projects.
-nav: true
+description: Software and research projects from the Bendall Lab.
+nav: false # TODO(bendall): hidden; only template sample projects exist. Consider using this for software (Telescope, Stellarscope, HAPHPIPE)
 nav_order: 3
 display_categories: [work, fun]
 horizontal: false

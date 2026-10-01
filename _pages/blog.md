@@ -2,7 +2,7 @@
 layout: default
 permalink: /blog/
 title: blog
-nav: true
+nav: false # TODO(bendall): hidden; blog has no real posts yet
 nav_order: 1
 pagination:
   enabled: true
