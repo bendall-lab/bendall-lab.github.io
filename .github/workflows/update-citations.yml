@@ -7,9 +7,15 @@ on:
     - cron: "0 0 * * 5" # Friday
   workflow_dispatch:
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   update-citations:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Checkout repository
@@ -19,7 +25,7 @@ jobs:
       #          token: ${{ secrets.PAT }}
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.13"
 
@@ -92,10 +98,20 @@ jobs:
           echo "🔧 Git configured."
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git add _data/citations.yml
-          git diff --staged --quiet || (
+          if git diff --staged --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+          else
             echo "📤 Committing and pushing changes..."
             git commit -m "Update Google Scholar citations"
             git push
-          )
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # GITHUB_TOKEN pushes don't trigger other workflows, so hand off explicitly:
+      # regenerate papers.bib (new google_scholar_id values), which then deploys.
+      - name: Regenerate publications and deploy
+        if: steps.commit.outputs.committed == 'true'
+        run: gh workflow run update-bibliography.yml --ref main

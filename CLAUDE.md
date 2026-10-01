@@ -23,7 +23,19 @@ Unlike stock al-folio (which edits `_bibliography/papers.bib` by hand), this sit
 
 Environment: uv (`pyproject.toml` + `uv.lock`, Python 3.13, `bibtexparser<2` — the scripts use the v1 API). Run `uv sync`, then `uv run python bin/update_references.py [--check]`. `reftools/environment.yml` is a conda/mamba equivalent. The root `requirements.txt` is a separate, smaller pip environment (`nbconvert`, `pyyaml`, `rendercv[full]`, `scholarly`) used by CI (`render-cv.yml`, notebook rendering) — not the bib pipeline's environment.
 
-Planned (not yet implemented): a GitHub Action that regenerates `papers.bib` when `paperpile.bib` or `citations.yml` changes and dispatches the deploy (the citation workflow will also dispatch `deploy.yml`, since pushes by `GITHUB_TOKEN` don't trigger it); and a local git hook.
+#### Automation
+
+- **Paperpile push** (its GitHub integration commits `_bibliography/paperpile.bib` to `main`) → `update-bibliography.yml` ("Update publications"): `resolve_links.py` (new entries only, warn-only) → `update_references.py` → commits `papers.bib` + `oa_links.yml` if changed → dispatches `deploy.yml`. Warnings (missing PDF links, missing thumbnails, unmatched Scholar entries) go to the run summary and never fail the run.
+- **Scholar cron** (`update-citations.yml`, Mon/Wed/Fri) → commits `citations.yml` if it changed → dispatches `update-bibliography.yml` (so a newly indexed paper gets its `google_scholar_id`) → dispatches `deploy.yml`. Dispatching is explicit because pushes made with `GITHUB_TOKEN` do not trigger other workflows. Counts reach the live site only via that rebuild.
+- `update-bibliography.yml` also runs on pushes to `pubinfo.yml`, `citations.yml` or `assets/img/publication_preview/**` and on manual dispatch. `deploy.yml` has `workflow_dispatch` and a concurrency group so overlapping deploys queue rather than race.
+- `check-bibliography.yml` is a PR gate (offline): the pytest suite plus `update_references.py --check`; it **fails** if `papers.bib` is stale.
+- **Local hook (optional):** `sh bin/hooks/install.sh` sets `core.hooksPath`; `bin/hooks/pre-commit` regenerates and stages `papers.bib` when a pipeline input is staged (offline; skip with `--no-verify`). Paperpile's commits bypass it, which is why the Action is the primary mechanism.
+
+First run (once): merge the pipeline branches; `uv sync`; enable the Paperpile export (folder `_My Publications`, GitHub, branch `main`, path `_bibliography/paperpile.bib`; pull before editing it locally); `uv run bin/resolve_links.py` and review `_data/oa_links.yml`; `uv run bin/make_thumbnails.py --pdf-dir … --open`, promote one image per paper, commit; `uv run bin/update_references.py` and commit `papers.bib`; install the hook.
+
+Adding a paper (≈4×/year): add it to `_My Publications` in Paperpile (with DOI and PDF) → Paperpile pushes → the Action regenerates and deploys (automatic). Then by hand: promote a thumbnail (`make_thumbnails.py --bibkey KEY`, then `--promote`), commit; for a published preprint add the pair under `preprint_published` in `pubinfo.yml`; for a featured paper add it to `selected_papers`; if no open PDF could be resolved, add a `pdf_overrides` entry or upload `<bibkey>.pdf` to the bucket (`pdf_bucket_base` + `pdf_bucket` in `pubinfo.yml`). Unpaywall can lag for brand-new papers — re-run the "Update publications" workflow later. The Scholar badge appears on its own once Scholar indexes the paper.
+
+GitHub settings to check: Settings → Actions → General → Workflow permissions = "Read and write" (the workflows also declare `contents: write` / `actions: write`); if `main` is protected, allow `github-actions[bot]` (and the Paperpile app) to push; Pages source = the `gh-pages` branch that `deploy.yml` writes; the Paperpile GitHub app has access to this repo.
 
 ### Data files
 

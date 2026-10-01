@@ -1,0 +1,98 @@
+name: Update publications
+
+# Regenerates _bibliography/papers.bib (and the public PDF link manifest) when the
+# Paperpile export, pubinfo, Google Scholar data or curated thumbnails change, then
+# deploys the site. Pushes made with GITHUB_TOKEN do not trigger other workflows, so
+# the deploy is dispatched explicitly at the end.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "_bibliography/paperpile.bib"
+      - "_data/pubinfo.yml"
+      - "_data/citations.yml"
+      - "assets/img/publication_preview/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: update-publications
+  cancel-in-progress: false
+
+jobs:
+  update:
+    # Never react to our own (or other bots') pushes; those paths dispatch explicitly.
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup uv 🐍
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies 💾
+        run: uv sync --frozen
+
+      - name: Resolve public PDF links 🔗
+        # Only entries without a manifest record are looked up. Warn-only: a network
+        # failure must not block regeneration.
+        continue-on-error: true
+        run: uv run --frozen python bin/resolve_links.py 2> resolve-warnings.txt
+
+      - name: Generate papers.bib 📚
+        run: uv run --frozen python bin/update_references.py 2> warnings.txt
+
+      - name: Report warnings 📝
+        if: always()
+        run: |
+          {
+            echo "## Publication pipeline warnings"
+            echo
+            echo "These are informational only; they never fail the run."
+            echo
+            for f in resolve-warnings.txt warnings.txt; do
+              if [ -s "$f" ]; then
+                echo "### $f"
+                echo '```'
+                cat "$f"
+                echo '```'
+              fi
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit and push if changed 📤
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _bibliography/papers.bib _data/oa_links.yml
+          if git diff --staged --quiet; then
+            echo "papers.bib and oa_links.yml are up to date."
+            echo "No changes to commit." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git commit -m "Update publications"
+          # Paperpile and the citation workflow also push to main; retry on a race.
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "Push attempt $attempt failed; retrying..."
+            sleep $((attempt * 5))
+          done
+          echo "Could not push to main after 3 attempts." >&2
+          exit 1
+
+      - name: Deploy site 🚀
+        # GITHUB_TOKEN pushes don't trigger deploy.yml, so dispatch it.
+        run: gh workflow run deploy.yml --ref main

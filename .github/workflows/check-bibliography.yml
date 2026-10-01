@@ -1,0 +1,46 @@
+name: Check publications
+
+# PR gate: papers.bib must be what the pipeline generates from its inputs, and the
+# pipeline's tests must pass. Fully offline.
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "_bibliography/**"
+      - "_data/pubinfo.yml"
+      - "_data/citations.yml"
+      - "_data/oa_links.yml"
+      - "assets/img/publication_preview/**"
+      - "bin/**.py"
+      - "tests/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/check-bibliography.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup uv 🐍
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies 💾
+        run: uv sync --frozen
+
+      - name: Run tests 🧪
+        run: uv run --frozen --with pytest pytest tests
+
+      - name: Check papers.bib is up to date 🔎
+        # Exits 1 if regenerating would change papers.bib; run
+        # `uv run python bin/update_references.py` and commit the result.
+        run: uv run --frozen python bin/update_references.py --check
