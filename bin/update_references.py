@@ -188,12 +188,107 @@ def find_orphan_previews(bibkeys, imgdir: Path) -> List[tuple]:
     return orphans
 
 
+def _match_title(s: str) -> str:
+    """Looser title form for suggestions: drop parenthetical text such as '(HERV)'."""
+    return normtitle(re.sub(r"\([^)]*\)|\[[^\]]*\]", " ", s or ""))
+
+
+def _collapsed_preprints(ref_df: pd.DataFrame, pubinfo: Dict[str, Any] | None) -> set:
+    """Bibkeys of preprints that `remove_published_preprints` will drop (their published
+    version is in the bib), so they aren't reported as missing a Scholar match."""
+    dois = ref_df["doi"].map(norm_doi)
+    out = set()
+    for pair in (pubinfo or {}).get("preprint_published") or []:
+        pre, pub = norm_doi(pair.get("preprint")), norm_doi(pair.get("published"))
+        if pre and pub and (dois == pub).any():
+            out.update(ref_df.loc[dois == pre, "ID"])
+    return out
+
+
+def _resolve_overrides(ref_df: pd.DataFrame, gs_df: pd.DataFrame, overrides) -> Dict[Any, Any]:
+    """Map ref_df index -> gs_df index for `scholar_overrides` in pubinfo.yml.
+
+    Keys are a DOI (preferred, as Paperpile bibkeys can change) or a bibkey; values are the
+    bare Scholar pubid or the full `userid:pubid` key from citations.yml. Problems only warn."""
+    if not overrides:
+        return {}
+    if not isinstance(overrides, dict):
+        warn("scholar_overrides in pubinfo.yml must be a mapping of DOI/bibkey -> Scholar id; ignoring.")
+        return {}
+    dois = ref_df["doi"].map(norm_doi)
+    resolved: Dict[Any, Any] = {}
+    claimed_by: Dict[Any, str] = {}  # gs index -> override key
+    for key in sorted(overrides, key=str):
+        value = str(overrides[key]).strip() if overrides[key] is not None else ""
+        k = str(key).strip()
+        if (kdoi := norm_doi(k)) and kdoi.startswith("10."):
+            rows = ref_df.index[dois == kdoi]
+        else:
+            rows = ref_df.index[ref_df["ID"] == k]
+        if not len(rows):
+            warn(f"scholar_overrides: '{k}' matches no entry in the Paperpile bibliography; ignoring.")
+            continue
+        mask = (gs_df["key"] == value) if ":" in value else (gs_df["gs_id"] == value)
+        gs_rows = gs_df.index[mask]
+        if not len(gs_rows):
+            warn(f"scholar_overrides: '{k}' -> '{value}' is not in citations.yml; ignoring.")
+            continue
+        if len(gs_rows) > 1:
+            warn(f"scholar_overrides: '{k}' -> '{value}' is ambiguous ({len(gs_rows)} Scholar entries); "
+                 "use the full 'userid:pubid' key. Ignoring.")
+            continue
+        gi, ri = gs_rows[0], rows[0]
+        if ri in resolved and resolved[ri] != gi:
+            warn(f"scholar_overrides: {ref_df.at[ri, 'ID']} has conflicting overrides; keeping the first.")
+            continue
+        if gi in claimed_by and resolved.get(ri) != gi:
+            warn(f"scholar_overrides: Scholar id '{value}' is claimed by both '{claimed_by[gi]}' and '{k}'; "
+                 f"ignoring '{k}'.")
+            continue
+        resolved[ri] = gi
+        claimed_by[gi] = k
+    return resolved
+
+
+def _suggest_overrides(ref_df, gs_df, unmatched_idx, skip_ids) -> None:
+    """For unmatched Paperpile entries, print the closest unclaimed Scholar titles and a
+    ready-to-paste `scholar_overrides` line for the best one."""
+    free = gs_df[gs_df["matched_to"].isnull()]
+    if free.empty:
+        return
+    free_titles = {gi: _match_title(t) for gi, t in free["title"].items()}
+    for idx in unmatched_idx:
+        r = ref_df.loc[idx]
+        if r["ID"] in skip_ids:
+            continue
+        nt = _match_title(r["title"]) if isinstance(r["title"], str) else ""
+        scored = sorted(
+            ((difflib.SequenceMatcher(None, nt, t).ratio(), gi) for gi, t in free_titles.items()),
+            key=lambda x: (-x[0], str(x[1])),
+        )
+        scored = [(s, gi) for s, gi in scored[:3] if s >= 0.5]
+        info(f"  {r['ID']}: {' '.join(str(r['title']).split())}")
+        if not scored:
+            info("      no similar Google Scholar titles")
+            continue
+        for s, gi in scored:
+            g = free.loc[gi]
+            info(f"      {s:.2f}  {g['key']} ({g['year']}): {g['title'][:90]}")
+        top = free.loc[scored[0][1]]
+        okey = norm_doi(r["doi"]) or r["ID"]
+        info(f'      paste under scholar_overrides:  {okey}: "{top["gs_id"]}"')
+
+
 def add_google_scholar(
-    ref_df: pd.DataFrame, gs_data: Dict[str, Any]
+    ref_df: pd.DataFrame,
+    gs_data: Dict[str, Any],
+    overrides: Dict[str, Any] | None = None,
+    pubinfo: Dict[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Attach `google_scholar_id` (the pubid part of the `userid:pubid` key in
-    citations.yml) by matching on DOI, title+year, title, then truncated title.
-    Counts are NOT copied; the site reads them from citations.yml at build time.
+    citations.yml). `scholar_overrides` (pubinfo.yml) win; everything else is matched on
+    DOI, title+year, title, then truncated title. Counts are NOT copied; the site reads
+    them from citations.yml at build time.
 
     Returns (ref_df, gs_df) where gs_df has the per-paper match results."""
     papers = (gs_data or {}).get("papers") or {}
@@ -218,7 +313,9 @@ def add_google_scholar(
     gs_df["matched_to"] = None
     gs_df["match_on"] = None
 
-    claimed: set = set()  # gs rows already assigned
+    # Manual overrides first: they claim both sides before automatic matching starts.
+    results = {idx: (gi, "override") for idx, gi in _resolve_overrides(ref_df, gs_df, overrides).items()}
+    claimed: set = {gi for gi, _ in results.values()}  # gs rows already assigned
 
     def find(row):
         doi = norm_doi(row["doi"])
@@ -241,8 +338,9 @@ def add_google_scholar(
         return None, None
 
     # Two passes so stronger rules win before weaker ones can claim an entry.
-    results = {}
     for idx, row in ref_df.iterrows():
+        if idx in results:
+            continue
         gi, rule = find(row)
         if gi is not None and rule in ("doi", "title+year"):
             claimed.add(gi)
@@ -265,11 +363,11 @@ def add_google_scholar(
     info("Google Scholar match results:")
     for rule, n in gs_df["match_on"].value_counts(dropna=False).items():
         info(f"  {n:4d}  {'UNMATCHED' if pd.isnull(rule) else rule}")
-    unmatched_pp = ref_df[ref_df["google_scholar_id"].isnull()]
-    if len(unmatched_pp):
-        info("Paperpile entries without a Google Scholar match:")
-        for _, r in unmatched_pp.iterrows():
-            info(f"  {r['ID']}: {r['title']}")
+    skip = _collapsed_preprints(ref_df, pubinfo)
+    unmatched_idx = [i for i in ref_df.index[ref_df["google_scholar_id"].isnull()] if ref_df.at[i, "ID"] not in skip]
+    if unmatched_idx:
+        info("Paperpile entries without a Google Scholar match (closest Scholar titles):")
+        _suggest_overrides(ref_df, gs_df, unmatched_idx, skip)
     unmatched_gs = gs_df[gs_df["matched_to"].isnull()]
     if len(unmatched_gs):
         info("Google Scholar entries without a Paperpile match:")
@@ -372,7 +470,7 @@ def build_bibtex(
 
     if citations_yml is not None:
         gs_data = yaml_fromfile(citations_yml)
-        pp_df, gs_df = add_google_scholar(pp_df, gs_data)
+        pp_df, gs_df = add_google_scholar(pp_df, gs_data, pubinfo.get("scholar_overrides"), pubinfo)
         db.comments.append('Add "google_scholar_id" field from Google Scholar data.')
         if update_citations_yml:
             backfill_citation_dois(citations_yml, gs_data, gs_df)
