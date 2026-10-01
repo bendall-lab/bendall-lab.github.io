@@ -123,3 +123,12 @@ def test_manifest_to_pdf_and_html_fields():
     assert pd.isnull(out.loc["B", "pdf"]) and out.loc["B", "html"] == "https://doi.org/10.1/b"
     assert out.loc["C", "pdf"] == "https://b.org/C.pdf"
     assert pd.isnull(out.loc["D", "pdf"]) and pd.isnull(out.loc["D", "html"])
+
+
+def test_find_orphan_previews(tmp_path):
+    import update_references as ur
+    for n in ["A2020-aa_fig1.webp", "A2020-bb_fig1.webp", "B2021-zz_page1.png", "notes.txt", "noscore.png"]:
+        (tmp_path / n).write_bytes(b"x")
+    got = dict(ur.find_orphan_previews(["A2020-bb", "C2022-qq"], tmp_path))
+    assert got == {"A2020-aa_fig1.webp": ["A2020-bb"], "B2021-zz_page1.png": []}
+    assert ur.find_orphan_previews(["A2020-bb"], tmp_path / "missing") == []
