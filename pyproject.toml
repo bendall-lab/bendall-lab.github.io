@@ -1,0 +1,16 @@
+[project]
+name = "bendall-lab-refs"
+version = "0.1.0"
+description = "Publication pipeline for the Bendall lab site (Paperpile bib -> papers.bib)"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "bibtexparser<2",
+    "pandas",
+    "pyyaml",
+    "pymupdf",
+    "scholarly",
+    "requests",
+]
+
+[tool.uv]
+package = false
