@@ -14,6 +14,20 @@ preprint_published:
   - preprint: "10.1101/2023.12.06.570422"
     published: "10.1111/acel.14288"
 
+# Google Scholar overrides (used by bin/update_references.py; optional).
+#
+# Force the Scholar publication for an entry when automatic matching (DOI / title+year /
+# title) fails, e.g. Scholar lists a different title or "Unknown Year". Keys are a DOI
+# (preferred: Paperpile bibkeys can change when an entry is re-created) or a Paperpile
+# bibkey; DOIs are case-insensitive. Values are the Scholar pubid or the full
+# "userid:pubid" key as it appears in _data/citations.yml. An override wins over automatic
+# matching and the Scholar entry can't be claimed by another paper. The log lists unmatched
+# entries with a ready-to-paste line.
+scholar_overrides:
+  # Scholar lists the preprint title "Human Endogenous Retrovirus (HERV) Profiling ...".
+  "10.3389/fonc.2026.1708501": "4JMBOYKVnBMC" # Fei2026-zj
+
+
 # Public PDF links (used by bin/resolve_links.py; all optional).
 #
 # Force a specific PDF/landing URL for one bibkey (wins over Unpaywall / Europe PMC):
