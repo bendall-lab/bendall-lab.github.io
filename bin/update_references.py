@@ -168,6 +168,26 @@ def add_preview(ref_df: pd.DataFrame, imgdir: Path) -> pd.DataFrame:
     return ref_df
 
 
+def find_orphan_previews(bibkeys, imgdir: Path) -> List[tuple]:
+    """Images in imgdir whose `<bibkey>` prefix matches no key in `bibkeys`.
+    Returns (filename, suggested_keys) pairs; suggestions are current keys sharing the
+    `<Author><year>` prefix (Paperpile sometimes re-keys an entry, changing the suffix)."""
+    imgext = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp"}
+    keys = set(bibkeys)
+    by_prefix: Dict[str, List[str]] = defaultdict(list)
+    for k in sorted(keys):
+        by_prefix[k.rsplit("-", 1)[0]].append(k)
+    orphans = []
+    if imgdir.is_dir():
+        for p in sorted(imgdir.iterdir()):
+            if p.suffix.lower() not in imgext or "_" not in p.stem:
+                continue
+            key = p.stem.rsplit("_", 1)[0]
+            if key not in keys:
+                orphans.append((p.name, by_prefix.get(key.rsplit("-", 1)[0], [])))
+    return orphans
+
+
 def add_google_scholar(
     ref_df: pd.DataFrame, gs_data: Dict[str, Any]
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -346,6 +366,9 @@ def build_bibtex(
 
     pp_df = add_preview(pp_df, preview_dir)
     db.comments.append('Add "preview" field with preview images.')
+    for fname, suggestions in find_orphan_previews(pp_df["ID"], preview_dir):
+        hint = f" (did the key change? candidates: {', '.join(suggestions)})" if suggestions else ""
+        warn(f"Orphaned preview '{fname}': no entry with that bibkey in {paperpile_bib.name}{hint}.")
 
     if citations_yml is not None:
         gs_data = yaml_fromfile(citations_yml)
