@@ -1,0 +1,28 @@
+#!/bin/sh
+# Regenerate _bibliography/papers.bib when a pipeline input is staged.
+# Offline and fast: no link resolution, no network. Skip with `git commit --no-verify`.
+
+root=$(git rev-parse --show-toplevel) || exit 1
+cd "$root" || exit 1
+
+staged=$(git diff --cached --name-only)
+if ! printf '%s\n' "$staged" | grep -Eq '^(_bibliography/paperpile\.bib|_data/pubinfo\.yml|_data/oa_links\.yml|_data/citations\.yml|assets/img/publication_preview/.+)$'; then
+    exit 0
+fi
+
+if ! command -v uv >/dev/null 2>&1; then
+    echo "pre-commit: 'uv' not found; install it (https://docs.astral.sh/uv/) or commit with --no-verify." >&2
+    exit 1
+fi
+
+log=$(mktemp "${TMPDIR:-/tmp}/update_references.XXXXXX") || exit 1
+if ! uv run --frozen python bin/update_references.py >"$log" 2>&1; then
+    echo "pre-commit: bin/update_references.py failed; papers.bib not updated." >&2
+    cat "$log" >&2
+    rm -f "$log"
+    exit 1
+fi
+rm -f "$log"
+
+git add _bibliography/papers.bib
+echo "pre-commit: regenerated and staged _bibliography/papers.bib"

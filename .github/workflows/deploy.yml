@@ -64,6 +64,12 @@ on:
 permissions:
   contents: write
 
+# Serialize deploys: a push-triggered and a dispatched run (see update-bibliography.yml)
+# can overlap, and the older build must not finish last and overwrite the newer site.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     # available images: https://github.com/actions/runner-images#available-images
